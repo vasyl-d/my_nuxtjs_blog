@@ -1,13 +1,11 @@
 <template>
-    <h1>Привет, это страница exit</h1>
-  </template>
-  
-  <script>
-  export default {
-    name: "signout"
+  <div></div>
+</template>
+
+<script>
+export default {
+  async created() {
+    await this.$auth.logout()
   }
-  </script>
-  
-  <style scoped>
-  
-  </style>
+}
+</script>

@@ -1,13 +1,14 @@
 <template>
+  <div>
+    <Header :title=url />
   <div class="container">
-    <h1 class="my-3">Последние записи блога</h1>
+    <h1 class="my-3">Записи блога c тегом {{ url }}</h1>
     <div class="row">
       <div v-for="post in posts" :key="post.slug" class="col-md-4">
           <div class="card mb-4 shadow-sm">
             <img :src="post.image" alt="" class="card-img-top">
             <div class="card-body">
-              <nuxt-link :to="`/posts/${post.slug}`" ><h4 class="card-title">{{ post.title }}</h4></nuxt-link>
-              <h5>{{ post.h1 }}</h5>
+              <nuxt-link :to="`/posts/${post.slug}`" ><h4 class="card-title">{{ post.h1 }}</h4></nuxt-link>
               <div v-html="post.description"></div>
               <div class="mb-2">
               <span v-for="tag in post.tags">
@@ -24,24 +25,29 @@
           </div>
       </div>
     </div>
-    <div class="btn-group"> {{ prev }} {{ next }} </div>
+  </div>
   </div>
 </template>
   
-  <script>
-  import axios from "axios";
-  export default {
-    async asyncData(ctx) {
-      const { data } = await axios.get(`http://127.0.0.1:8000/api/posts/`);
-      return {
-        posts: data.results,
-        next: data.next,
-        prev: data.previous
-      }
+<script>
+import axios from "axios";
+import post_detail from "@/layouts/post_detail";
+import Header from "~/components/Header";
+export default {
+  components: {
+    Header
+  },
+  layout: "post_detail",
+  async asyncData({params}) {
+    const { data } = await axios.get(`http://127.0.0.1:8000/api/tags/${params.slug}`);
+    return {
+      posts: data.results,
+      url: params.slug
     }
-  }
-  </script>
-  
-  <style>
-  
-  </style>
+  },
+}
+</script>
+
+<style scoped>
+
+</style>

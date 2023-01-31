@@ -11,9 +11,9 @@
   
   
   <script>
-  import Navbar from "~/components/navbar";
-  import Slider from "~/components/slider";
-  import Footer from "@/components/footer";
+  import Navbar from "~/components/Navbar";
+  import Slider from "~/components/Slider";
+  import Footer from "@/components/Footer";
   
   export default {
     components: {
