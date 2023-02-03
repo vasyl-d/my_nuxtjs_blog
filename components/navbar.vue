@@ -24,7 +24,7 @@
       </form>
       <client-only>
         <span class="navbar-text mr-2" v-if="user">Hello, {{ user.username }}</span>
-        <span v-if="loggedIn"><nuxt-link class="btn btn-outline-light mr-2" to="/signout">Выход</nuxt-link></span>
+        <span v-if="loggedIn"><button class="btn btn-outline-light mr-2" @click="logOut();">Выход</button></span>
         <span v-else>
           <button class="btn btn-outline-success my-2 my-sm-0 mr-2" @click="showModal = true">Вход</button>
           <nuxt-link class="btn btn-outline-light mr-2" to="/signup">Регистрация</nuxt-link>
@@ -48,7 +48,10 @@ export default {
   methods: {
     submit(){
       this.$router.push("/search?q="+this.q);
-    }
+    },
+    async logOut() {
+      await this.$auth.logout()
+  }
   },
   computed: {
     loggedIn() {

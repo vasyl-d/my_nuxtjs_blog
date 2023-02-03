@@ -47,14 +47,14 @@
     import axios from "axios";
     import Header from "@/components/Header";
     export default {
-      name: 'search',
+      name: 'test_search',
       components: {Header},
       layout: "post_detail",
       watchQuery: ['q'],
       data() {
         return {
           count: 0,
-          posts: '',
+          posts: [],
           title: '',
           next: '',
           previous: '',
@@ -71,5 +71,14 @@
           previous: data.previous,
         }
       },
+      methods: {
+        async fetch(page) {
+          let q = this.q;
+          const { data } = await axios.get(`http://127.0.0.1:8000/api/posts/?search=${q}${page}`);
+          this.posts = data.results;
+          this.next = data.next;
+          this.previous = data.previous;
+        },
+      }
     }
     </script>

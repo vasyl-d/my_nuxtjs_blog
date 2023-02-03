@@ -10,6 +10,9 @@
             <span v-if="user">
               <button type="submit" class="btn btn-primary" :disabled='!isComplete'>Отправить</button>
             </span>
+            <span v-else>
+              <h5>Залогиньтесь или зарегистрируйтесь для комментирования</h5>
+            </span>
           </form>
         </div>
       </div>
