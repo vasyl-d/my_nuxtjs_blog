@@ -65,6 +65,7 @@ export default {
   data() {
     return {
       title: "Написать мне",
+      err: '',
       form: {
         name: '',
         email: '',
@@ -74,29 +75,34 @@ export default {
     }
   },
   methods: {
-    submitForm() {
-      let contactFormData = new FormData();
-      contactFormData.set('name', this.form.name);
-      contactFormData.set('email', this.form.email);
-      contactFormData.set('subject', this.form.subject);
-      contactFormData.set('message', this.form.message);
+    async submitForm() {
+      const data = {
+          name: this.form.name,
+          email: this.form.email,
+          title: this.form.subject,
+          message: this.form.message
+        };
+      const headers = {
+          'Content-Type': 'application/json'
+          };
       console.log('submitting data...');
-      axios({
-        method: 'post',
-        url: 'http://localhost:8000/api/feedback/',
-        data: contactFormData
-      }).then(function (response) {
-        console.log(response);
-      }).catch(function (response) {
-        console.log(response);
-      });
-      this.$router.push("/success");
-    }
+      try {
+        let response = await this.$axios.post('http://127.0.0.1:8000/api/feedback/', data, headers);
+        this.$router.push("/success");
+      } catch(err) {
+        this.title = "Error request:";
+        console.log(err);
+      }
+    },
+    validEmail(email) {
+      var re = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+      return re.test(email);
+    },
   },
   computed: {
       isComplete () {
-        return this.form.name && this.form.email && this.form.subject && this.form.message;
-      }
+        return this.form.name && this.validEmail(this.form.email) && this.form.subject && this.form.message;
+      },
     },
 }
 </script>
